@@ -60,7 +60,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IFlushable.cs" />
     <Compile Include="Logger.cs" />
     <Compile Include="LoggerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

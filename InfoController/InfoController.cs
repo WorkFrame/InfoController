@@ -22,7 +22,7 @@ namespace NetEti.ApplicationControl
     ///                        typeof(T).IsAssignableFrom(instance.GetType()).<br></br>
     /// 02.05.2019 Erik Nagel: IDisposable implementiert.
     /// </remarks>
-    public class InfoController : IInfoController, IDisposable
+    public class InfoController : IInfoController, IDisposable, IFlushable
     {
         #region public members
 
@@ -110,6 +110,15 @@ namespace NetEti.ApplicationControl
         }
 
         /// <summary>
+        /// Hierüber wird 'mal eben' einen Message verbreitet.
+        /// </summary>
+        /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
+        public static void FlushAll()
+        {
+            GetInfoPublisher().Flush();
+        }
+
+        /// <summary>
         /// Hierüber wird einen neue Message verbreitet.
         /// </summary>
         /// <param name="sender">Der Absender der Nachricht</param>
@@ -143,7 +152,35 @@ namespace NetEti.ApplicationControl
         }
 
         /// <summary>
-        /// Flusht offene Logger.
+        /// Flusht alle flushable Viewer/Logger.
+        /// </summary>
+        public void Flush()
+        {
+            IInfoViewer[] viewers;
+            lock (InfoController._lockMe)
+            {
+                // zur weiteren Verarbeitung threadsafe in ein entkoppeltes Array kopieren.
+                // In einer Multithreading-Umgebung können den _infoMessageReceivers Viewer hinzugefügt
+                // werden, während diese Routine gerade läuft, was bei der direkten Verwendung von
+                // this._infoMessageReceivers zu der Exception führen würde, dass die Auflistung
+                // während der Verarbeitung geändert wurde.
+                // Alternative wäre, die gesamte Routine zu sperren. Das würde aber möglicherweise die
+                // gesamte Verarbeitung ausbremsen, weshalb ich hier lieber eine im Extremfall verloren
+                // gegangene Message in Kauf nehme.
+                viewers = new IInfoViewer[this._infoMessageReceivers.Count];
+                this._infoMessageReceivers.Keys.CopyTo(viewers, 0);
+            }
+            foreach (IInfoViewer viewer in viewers)
+            {
+                if (viewer is IFlushable)
+                {
+                    (viewer as IFlushable).Flush();
+                }
+            }
+        }
+
+        /// <summary>
+        /// Disposed alle Viewer.
         /// </summary>
         public void DisposeAll()
         {

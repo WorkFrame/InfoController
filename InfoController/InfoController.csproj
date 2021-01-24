@@ -58,6 +58,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptioner.cs" />
+    <Compile Include="IFlushable.cs" />
     <Compile Include="IInfoController.cs" />
     <Compile Include="IInfoPublisher.cs" />
     <Compile Include="IInfoSource.cs" />
