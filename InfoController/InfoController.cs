@@ -110,9 +110,8 @@ namespace NetEti.ApplicationControl
         }
 
         /// <summary>
-        /// Hierüber wird 'mal eben' einen Message verbreitet.
+        /// Hierüber werden alle InfoPublisher geflusht.
         /// </summary>
-        /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
         public static void FlushAll()
         {
             GetInfoPublisher().Flush();
