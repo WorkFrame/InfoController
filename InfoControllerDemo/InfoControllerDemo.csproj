@@ -66,9 +66,6 @@
     <Reference Include="NetEti.Global">
       <HintPath>$(AssemblyRoot)\NetEti.Global.dll</HintPath>
     </Reference>
-    <Reference Include="NetEti.Logging">
-      <HintPath>$(AssemblyRoot)\NetEti.Logging.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -116,6 +113,10 @@
     <ProjectReference Include="..\InfoController\InfoController.csproj">
       <Project>{CEE782B3-FC31-4F24-BF11-9D8CA6AA0099}</Project>
       <Name>InfoController</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Logging\Logging.csproj">
+      <Project>{3787e873-1d59-4695-a0cc-8197cc7aff82}</Project>
+      <Name>Logging</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
