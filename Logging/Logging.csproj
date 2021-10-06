@@ -48,9 +48,6 @@
     <Reference Include="NetEti.Global">
       <HintPath>$(AssemblyRoot)\NetEti.Global.dll</HintPath>
     </Reference>
-    <Reference Include="NetEti.InfoController">
-      <HintPath>$(AssemblyRoot)\NetEti.InfoController.dll</HintPath>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows.Forms" />
@@ -64,6 +61,12 @@
     <Compile Include="LoggerBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Statistics.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\InfoController\InfoController.csproj">
+      <Project>{cee782b3-fc31-4f24-bf11-9d8ca6aa0099}</Project>
+      <Name>InfoController</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
