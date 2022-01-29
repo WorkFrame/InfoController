@@ -20,6 +20,7 @@ namespace NetEti.ApplicationControl
     /// 15.03.2014 Erik Nagel: Statistics eingebaut; Regex-Filter implementiert.<br></br>
     /// 14.07.2016 Erik Nagel: Exceptions werden jetzt auf jeden Fall geloggt.<br></br>
     /// 14.01.2018 Erik Nagel: Wegen Memory-Leaks überarbeitet (StringBuilder); Ausgabeformat optimiert.<br></br>
+    /// 21.01.2022 Erik Nagel: _replaceRegex implementiert.<br></br>
     /// </remarks>
     public class Logger : LoggerBase
     {
@@ -39,7 +40,17 @@ namespace NetEti.ApplicationControl
             if (!String.IsNullOrEmpty(this._regexFilter) && msgArgs.LogLevel != InfoType.Exception && msgArgs.LogLevel != InfoType.NoRegex)
             {
                 MatchCollection alleTreffer = this._compiledRegexFilter.Matches(message);
-                logIt = alleTreffer.Count > 0;
+                if (alleTreffer.Count > 0)
+                {
+                    if (this._replaceRegex)
+                    {
+                        message = message.Replace(alleTreffer[0].Value, "").Trim();
+                    }
+                }
+                else
+                {
+                    logIt = false;
+                }
             }
             if (logIt)
             {
@@ -205,7 +216,7 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="plainMessage">Bei True werden keine Zusatzinformationen ausgegeben (Default: false).</param>
         /// <param name="regexFilter">Nur Zeilen, die diesen regulären Ausdruck erfüllen, werden geloggt.</param>
-        public Logger(bool plainMessage, string regexFilter) : this(getTempLogPath(), regexFilter, plainMessage) { }
+        public Logger(bool plainMessage, string regexFilter) : this(getTempLogPath(), regexFilter?? "", plainMessage) { }
 
         /// <summary>
         /// Vollständiger Konstruktor.
@@ -216,10 +227,19 @@ namespace NetEti.ApplicationControl
         public Logger(string logFilePathName, string regexFilter, bool plainMessage) : base(logFilePathName)
         {
             this._regexFilter = regexFilter;
-            this._compiledRegexFilter = new Regex(regexFilter);
             this._locker = new object();
             this.PlainMessage = plainMessage;
             this.StandardIndent = 4;
+            if (!this._regexFilter.StartsWith("@"))
+            {
+                this._replaceRegex = false;
+            }
+            else
+            {
+                this._replaceRegex = true;
+                this._regexFilter = this._regexFilter.Substring(1);
+            }
+            this._compiledRegexFilter = new Regex(this._regexFilter);
         }
 
         /// <summary>
@@ -235,6 +255,7 @@ namespace NetEti.ApplicationControl
         private readonly object _locker;
         private string _regexFilter;
         private Regex _compiledRegexFilter;
+        private bool _replaceRegex;
 
         /// <summary>
         /// Statisch, ermittelt den Default für Logfile- Pfad und Namen.

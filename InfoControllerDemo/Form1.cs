@@ -28,6 +28,7 @@ namespace NetEti.DemoApplications
 
         private ViewerAsWrapper _tbxMessagesViewer;
         private ViewerAsWrapper _lblMessageViewer;
+        private Logger _logger2;
 
         private void initialize()
         {
@@ -40,6 +41,11 @@ namespace NetEti.DemoApplications
                                             //string loggingRegexFilter = @"(?:_NOPPES_)"; // Nichts wird geloggt, bzw. nur Zeilen, die "_NOPPES_" enthalten.
             this._logger = new Logger(false, loggingRegexFilter);
             this._publisher.RegisterInfoReceiver(this._logger, loggerInfos);
+
+            string loggingRegexFilter2 = "@(?:#xxx#)"; // Alles wird geloggt (ist der Default).
+                                            //string loggingRegexFilter = @"(?:_NOPPES_)"; // Nichts wird geloggt, bzw. nur Zeilen, die "_NOPPES_" enthalten.
+            this._logger2 = new Logger("replace.log", loggingRegexFilter2, true);
+            this._publisher.RegisterInfoReceiver(this._logger2, loggerInfos);
 
             this._exceptioner = GenericSingletonProvider.GetInstance<Exceptioner>();
             this._publisher.RegisterInfoReceiver(this._exceptioner, typeof(Exception), loggerInfos);
@@ -80,6 +86,8 @@ namespace NetEti.DemoApplications
             this._publisher.UnregisterInfoReceiver(this._tbxMessagesViewer);
             Thread.Sleep(300);
             this._publisher.Publish(this, "Message 4");
+            Thread.Sleep(300);
+            this._publisher.Publish(this, "#xxx# Message 4a");
             Thread.Sleep(300);
             Application.DoEvents();
             Thread.Sleep(300);
