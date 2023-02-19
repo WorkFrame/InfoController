@@ -128,6 +128,16 @@ namespace NetEti.ApplicationControl
             object messageObject = msg;
             //string timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:G}", new object[] { System.DateTime.Now });
             string timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:yyyy.MM.dd HH:mm:ss,ffffff}", new object[] { System.DateTime.Now });
+            if (timestamp != this._lastTimestamp)
+            {
+                this._timestampCounter = 0;
+                this._lastTimestamp = timestamp;
+            }
+            else
+            {
+                this._timestampCounter++;
+            }
+            timestamp += this._timestampCounter.ToString("D3");
             informInfoReceivers(sender, messageObject, triggerInfoType, timestamp, ThreadInfos.GetThreadInfos());
         }
 
@@ -267,6 +277,8 @@ namespace NetEti.ApplicationControl
         }
 
         private Dictionary<IInfoViewer, InfoReceiverProperties> _infoMessageReceivers;
+        private int _timestampCounter;
+        private string _lastTimestamp;
 
         /// <summary>
         /// Privater Konstruktor, wird ggf. von der öffentlichen, statischen
@@ -275,6 +287,8 @@ namespace NetEti.ApplicationControl
         private InfoController()
         {
             this._infoMessageReceivers = new Dictionary<IInfoViewer, InfoReceiverProperties>();
+            this._timestampCounter = 0;
+            this._lastTimestamp = "";
         }
 
         /// <summary>
