@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using NetEti.Globals;
+﻿using NetEti.Globals;
 
 namespace NetEti.ApplicationControl
 {
@@ -123,7 +121,7 @@ namespace NetEti.ApplicationControl
         /// <param name="sender">Der Absender der Nachricht</param>
         /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
         /// <param name="triggerInfoType">Der Message-Typ, z.B.: InfoType.Milestone</param>
-        public void Publish(object sender, object msg, InfoType triggerInfoType)
+        public void Publish(object? sender, object msg, InfoType triggerInfoType)
         {
             object messageObject = msg;
             //string timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture, "{0:G}", new object[] { System.DateTime.Now });
@@ -146,7 +144,7 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="sender">Der Absender der Nachricht</param>
         /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
-        public void Publish(object sender, object msg)
+        public void Publish(object? sender, object msg)
         {
             this.Publish(sender, msg, InfoType.Info);
         }
@@ -183,7 +181,7 @@ namespace NetEti.ApplicationControl
             {
                 if (viewer is IFlushable)
                 {
-                    (viewer as IFlushable).Flush();
+                    (viewer as IFlushable)?.Flush();
                 }
             }
         }
@@ -211,7 +209,7 @@ namespace NetEti.ApplicationControl
             {
                 if (viewer is IDisposable)
                 {
-                    (viewer as IDisposable).Dispose();
+                    (viewer as IDisposable)?.Dispose();
                 }
             }
         }
@@ -223,7 +221,7 @@ namespace NetEti.ApplicationControl
         /// <param name="viewer">Der Message-Empfänger</param>
         /// <param name="classType">Der Klassentyp, für den sich msgHandler zuständig erklärt</param>
         /// <param name="triggerInfoTypes">Liste der Message-Typen, für die sich der Viewer interessiert</param>
-        public void RegisterInfoReceiver(IInfoViewer viewer, Type classType, InfoType[] triggerInfoTypes)
+        public void RegisterInfoReceiver(IInfoViewer viewer, Type? classType, InfoType[] triggerInfoTypes)
         {
             lock (InfoController._lockMe)
             {
@@ -272,7 +270,7 @@ namespace NetEti.ApplicationControl
 
         private struct InfoReceiverProperties
         {
-            public Type ClassType;
+            public Type? ClassType;
             public InfoType[] InfoTypes;
         }
 
@@ -300,7 +298,7 @@ namespace NetEti.ApplicationControl
         /// <param name="triggerInfoType">Der Typ der Message</param>
         /// <param name="timestamp">Der Timestamp der Message</param>
         /// <param name="threadInfos">Nummern des aktuellen Threads</param>
-        private void informInfoReceivers(object sender, object messageObject, InfoType triggerInfoType, string timestamp, string threadInfos)
+        private void informInfoReceivers(object? sender, object messageObject, InfoType triggerInfoType, string timestamp, string threadInfos)
         {
             InfoArgs msgArgs = new InfoArgs(messageObject, triggerInfoType, timestamp, threadInfos);
             IInfoViewer[] viewers;

@@ -1,10 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Threading;
-using System.Text;
+﻿using System.Text;
 using System.Text.RegularExpressions;
-using System.Linq;
-using System.Collections.Generic;
 
 namespace NetEti.ApplicationControl
 {
@@ -33,9 +28,9 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="sender">Der InfoController</param>
         /// <param name="msgArgs">Die Message mit Text, Typ und Timestamp</param>
-        public override void HandleInfo(object sender, InfoArgs msgArgs)
+        public override void HandleInfo(object? sender, InfoArgs msgArgs)
         {
-            string message = msgArgs.MessageObject.ToString();
+            string message = msgArgs.MessageObject.ToString() ?? "";
             bool logIt = true;
             if (!String.IsNullOrEmpty(this._regexFilter) && msgArgs.LogLevel != InfoType.Exception && msgArgs.LogLevel != InfoType.NoRegex)
             {
@@ -96,15 +91,15 @@ namespace NetEti.ApplicationControl
             int maxTries = 5;
             lock (_locker)
             {
-                StreamWriter SW;
+                StreamWriter? streamWriter;
                 int i = 0;
                 do
                 {
-                    SW = null;
+                    streamWriter = null;
                     try
                     {
-                        SW = new StreamWriter(new FileStream(this.LogTargetInfo, FileMode.Append, FileAccess.Write), Encoding.Default);
-                        SW.WriteLine(message);
+                        streamWriter = new StreamWriter(new FileStream(this.LogTargetInfo, FileMode.Append, FileAccess.Write), Encoding.Default);
+                        streamWriter.WriteLine(message);
                         i = maxTries;
                     }
                     catch (SystemException)
@@ -113,14 +108,14 @@ namespace NetEti.ApplicationControl
                     }
                     finally
                     {
-                        if (SW != null)
+                        if (streamWriter != null)
                         {
                             try
                             {
-                                SW.Close();
+                                streamWriter.Close();
                             }
                             catch { }
-                            SW.Dispose();
+                            streamWriter.Dispose();
                         }
                     }
                 } while (++i < maxTries);
@@ -155,7 +150,7 @@ namespace NetEti.ApplicationControl
             if (debugArchiveMaxCount > 0)
             {
                 List<FileInfo> archiveFiles =
-                    new DirectoryInfo(Path.GetDirectoryName(this.LogTargetInfo))
+                    new DirectoryInfo(Path.GetDirectoryName(this.LogTargetInfo) ?? "")
                         .GetFiles(Path.GetFileName(this.LogTargetInfo) + ".*").ToList();
                 if (archiveFiles.Count > debugArchiveMaxCount)
                 {
@@ -263,8 +258,15 @@ namespace NetEti.ApplicationControl
         /// <returns></returns>
         private static string getTempLogPath()
         {
-            string logFilePathName = System.Environment.GetEnvironmentVariable("TEMP");
-            return Path.Combine(logFilePathName, System.Windows.Forms.Application.ProductName + @".log");
+            string logFilePathName = System.Environment.GetEnvironmentVariable("TEMP") ?? "";
+            string productName = "";
+            System.Reflection.Assembly? assembly = System.Reflection.Assembly.GetEntryAssembly();
+            if (assembly != null)
+            {
+                // rtn = System.Windows.Forms.Application.ProductName; break;
+                productName = assembly.GetName().Name ?? "unbekannte Assembly";
+            }
+            return Path.Combine(logFilePathName, productName + @".log");
         }
 
         #endregion private members

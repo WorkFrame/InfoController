@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NetEti.ApplicationControl
+﻿namespace NetEti.ApplicationControl
 {
     /// <summary>
     /// Muss von einem Viewer implementiert werden, der sich beim
@@ -22,6 +17,6 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="sender">Der Absender der Information.</param>
         /// <param name="msgArgs">Erweiterte Informationen.</param>
-        void HandleInfo(object sender, InfoArgs msgArgs);
+        void HandleInfo(object? sender, InfoArgs msgArgs);
     }
 }

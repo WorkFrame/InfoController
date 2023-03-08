@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-
-namespace NetEti.ApplicationControl
+﻿namespace NetEti.ApplicationControl
 {
     /// <summary>
     /// Wrapperklasse um einen EventHandler; Implementiert IInfoViewer.
@@ -25,7 +20,7 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="sender">Der Absender der Message</param>
         /// <param name="msgArgs">Die Message mit Message-Object, Typ und Timestamp</param>
-        public void HandleInfo(object sender, InfoArgs msgArgs)
+        public void HandleInfo(object? sender, InfoArgs msgArgs)
         {
             this._msgHandler(sender, msgArgs);
         }

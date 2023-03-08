@@ -1,30 +1,23 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Library</OutputType>
     <TargetFramework>net7.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
     <ImplicitUsings>enable</ImplicitUsings>
     <AssemblyName>NetEti.$(MSBuildProjectName)</AssemblyName>
-    <RootNamespace>NetEti.DemoApplications</RootNamespace>
-    <Title>$(AssemblyName) - Demoprogramm</Title>
+    <RootNamespace>NetEti.ApplicationControl</RootNamespace>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <Title>$(AssemblyName) - Zeigt Exceptions und ExtendedExceptions in MessageBoxen</Title>
+    <Description>Assembly für die Ausgabe von  Exceptions und ExtendedExceptions in MessageBoxen</Description>
     <Authors>Erik Nagel</Authors>
     <Company>NetEti</Company>
-    <Description>$(AssemblyName) - Demoprogramm</Description>
     <Copyright>Copyright © $(Authors) 2012-2023</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\ExceptionPresenter\ExceptionPresenter.csproj" />
     <ProjectReference Include="..\InfoController\InfoController.csproj" />
-    <ProjectReference Include="..\Logging\Logging.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Reference Include="NetEti.Global">
-      <HintPath>..\..\..\ReadyBin\Assemblies\NetEti.Global.dll</HintPath>
-    </Reference>
   </ItemGroup>
 
 </Project>

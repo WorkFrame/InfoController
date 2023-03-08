@@ -1,8 +1,5 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Threading;
+﻿using NetEti.ApplicationControl;
 using NetEti.Globals;
-using NetEti.ApplicationControl;
 
 namespace NetEti.DemoApplications
 {
@@ -22,13 +19,13 @@ namespace NetEti.DemoApplications
 
         #region private members
 
-        private IInfoController _publisher;
-        private Logger _logger;
-        private Exceptioner _exceptioner;
+        private IInfoController? _publisher;
+        private Logger? _logger;
+        private Exceptioner? _exceptioner;
 
-        private ViewerAsWrapper _tbxMessagesViewer;
-        private ViewerAsWrapper _lblMessageViewer;
-        private Logger _logger2;
+        private ViewerAsWrapper? _tbxMessagesViewer;
+        private ViewerAsWrapper? _lblMessageViewer;
+        private Logger? _logger2;
 
         private void initialize()
         {
@@ -54,12 +51,12 @@ namespace NetEti.DemoApplications
             this._publisher.RegisterInfoReceiver(this._lblMessageViewer, new[] { InfoType.Info });
         }
 
-        private void handleMsgForTextBox(object sender, InfoArgs msgArgs)
+        private void handleMsgForTextBox(object? sender, InfoArgs msgArgs)
         {
             this.tbxMessages.Text += (Environment.NewLine + msgArgs.MessageObject.ToString());
         }
 
-        private void handleMsgForLabel(object sender, InfoArgs msgArgs)
+        private void handleMsgForLabel(object? sender, InfoArgs msgArgs)
         {
             this.lblMessage.Text = msgArgs.MessageObject.ToString();
         }
@@ -71,6 +68,10 @@ namespace NetEti.DemoApplications
 
         private void generateMessages()
         {
+            if (this._publisher == null || _tbxMessagesViewer == null)
+            {
+                throw new ApplicationException("_publisher und/oder _tbxMessagesViewer sind null!");
+            }
             this._publisher.RegisterInfoReceiver(this._tbxMessagesViewer, new[] { InfoType.Info });
             this._publisher.Publish(this, "Message 1");
             Thread.Sleep(300);

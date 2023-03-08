@@ -18,14 +18,14 @@
         /// <param name="sender">Der Absender der Nachricht</param>
         /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
         /// <param name="triggerInfoType">Der Message-Typ, z.B.: InfoType.Milestone</param>
-        void Publish(object sender, object msg, InfoType triggerInfoType);
+        void Publish(object? sender, object msg, InfoType triggerInfoType);
 
         /// <summary>
         /// Hierüber wird eine neue Message des Typs InfoType.Info verbreitet.
         /// </summary>
         /// <param name="sender">Der Absender der Nachricht</param>
         /// <param name="msg">Das zu verbreitende (Message-)Objekt</param>
-        void Publish(object sender, object msg);
+        void Publish(object? sender, object msg);
 
         /// <summary>
         /// Hierüber wird eine neue Message des Typs InfoType.Info mit Absender null verbreitet.

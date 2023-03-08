@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Text;
 using System.Timers;
 using System.Text.RegularExpressions;
 
@@ -168,8 +165,8 @@ namespace NetEti.ApplicationControl
                 bool logIt = true;
                 if (!String.IsNullOrEmpty(RegexFilter))
                 {
-                    MatchCollection alleTreffer = _compiledRegexFilter.Matches(registeredName);
-                    logIt = alleTreffer.Count > 0;
+                    MatchCollection? alleTreffer = _compiledRegexFilter?.Matches(registeredName);
+                    logIt = alleTreffer?.Count > 0;
                 }
                 if (logIt)
                 {
@@ -186,7 +183,7 @@ namespace NetEti.ApplicationControl
         {
             LoggingTriggerCounter = 5000; // 5000 Zählvorgänge oder Millisekunden
             IsTimerTriggered = true;
-            RegexFilter = "";
+            _regexFilter = "";
             _locker = new object();
         }
 
@@ -195,11 +192,11 @@ namespace NetEti.ApplicationControl
         private static long _overallIncrementCounter = 0;
         private static Dictionary<string, long> _incrementer = new Dictionary<string, long>() { };
 
-        private static System.Timers.Timer _loggingTimer;
+        private static System.Timers.Timer? _loggingTimer;
 
         private static bool _isTimerTriggered;
         private static string _regexFilter;
-        private static Regex _compiledRegexFilter;
+        private static Regex? _compiledRegexFilter;
 
         private static void resetStartTimer()
         {
@@ -216,14 +213,14 @@ namespace NetEti.ApplicationControl
             }
         }
 
-        private static void loggingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private static void loggingTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            _loggingTimer.Stop();
+            _loggingTimer?.Stop();
             lock (_locker)
             {
                 triggerStatistic();
             }
-            _loggingTimer.Start();
+            _loggingTimer?.Start();
         }
 
         #endregion private members

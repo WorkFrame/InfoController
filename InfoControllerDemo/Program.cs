@@ -1,7 +1,4 @@
-﻿using System;
-using System.Windows.Forms;
-
-namespace NetEti.DemoApplications
+﻿namespace NetEti.DemoApplications
 {
     static class Program
     {
@@ -12,6 +9,7 @@ namespace NetEti.DemoApplications
         static void Main()
         {
             Application.EnableVisualStyles();
+            Application.SetHighDpiMode(HighDpiMode.SystemAware);
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Form1());
         }

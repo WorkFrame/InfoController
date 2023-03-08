@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetEti.ApplicationControl
+﻿namespace NetEti.ApplicationControl
 {
     /// <summary>
     /// Bildet die Sicht auf den InfoController ab,
@@ -21,7 +19,7 @@ namespace NetEti.ApplicationControl
         /// <param name="viewer">Der Message-Empfänger</param>
         /// <param name="classType">Der Klassentyp, für den sich msgHandler zuständig erklärt</param>
         /// <param name="triggerInfoTypes">Liste der Message-Typen, für die sich der Viewer interessiert</param>
-        void RegisterInfoReceiver(IInfoViewer viewer, Type classType, InfoType[] triggerInfoTypes);
+        void RegisterInfoReceiver(IInfoViewer viewer, Type? classType, InfoType[] triggerInfoTypes);
 
         /// <summary>
         /// Hierüber trägt sich ein interessierter Viewer in die Liste der zu

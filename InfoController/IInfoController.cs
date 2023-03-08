@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace NetEti.ApplicationControl
+﻿namespace NetEti.ApplicationControl
 {
     /// <summary>
     /// Bildet die komplette Sicht auf den InfoController ab,

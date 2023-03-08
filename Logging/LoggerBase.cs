@@ -1,9 +1,5 @@
-﻿using System;
-using System.IO;
-using System.Collections.Generic;
+﻿using System.Timers;
 using NetEti.Globals;
-using System.Timers;
-using System.Threading;
 
 namespace NetEti.ApplicationControl
 {
@@ -75,7 +71,7 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="sender">Der InfoController</param>
         /// <param name="msgArgs">Die Message mit Text, Typ und Timestamp</param>
-        public abstract void HandleInfo(object sender, InfoArgs msgArgs);
+        public abstract void HandleInfo(object? sender, InfoArgs msgArgs);
 
         #endregion IInfoViewer Members
 
@@ -100,7 +96,7 @@ namespace NetEti.ApplicationControl
         {
             get
             {
-                return (this._logTargetPathInfo);
+                return (this._logTargetPathInfo) ?? "";
             }
             set
             {
@@ -259,7 +255,7 @@ namespace NetEti.ApplicationControl
                 StreamReader actFile = new StreamReader(logPath, System.Text.Encoding.Default);
                 while (!actFile.EndOfStream)
                 {
-                    string zeile = actFile.ReadLine();
+                    string zeile = actFile.ReadLine() ?? "";
                     logLines.Add(zeile);
                     if (!countLines)
                     {
@@ -273,7 +269,8 @@ namespace NetEti.ApplicationControl
                 }
                 actFile.Close();
                 actFile.Dispose();
-                string savPfadname = Path.Combine(Path.GetDirectoryName(logPath), Path.GetFileNameWithoutExtension(logPath) + ".last");
+                string savPfadname = Path.Combine(Path.GetDirectoryName(logPath) ?? "",
+                    Path.GetFileNameWithoutExtension(logPath) + ".last");
                 if (File.Exists(savPfadname))
                 {
                     File.Delete(savPfadname);
@@ -352,12 +349,12 @@ namespace NetEti.ApplicationControl
 
         #region private members
 
-        private string _logTargetPathInfo;
-        private System.Timers.Timer _loggingTimer;
+        private string? _logTargetPathInfo;
+        private System.Timers.Timer? _loggingTimer;
         private bool _isTimerTriggered;
         private object _lockMe;
         private object _lockMe2;
-        private Thread _worker;
+        private Thread? _worker;
         private List<String> messageBuffer;
         private List<String> messageFlushBuffer;
         private long _overallIncrementCounter;
@@ -378,11 +375,11 @@ namespace NetEti.ApplicationControl
             }
         }
 
-        private void loggingTimer_Elapsed(object sender, ElapsedEventArgs e)
+        private void loggingTimer_Elapsed(object? sender, ElapsedEventArgs e)
         {
-            this._loggingTimer.Stop();
+            this._loggingTimer?.Stop();
             this.flushBuffer(false);
-            this._loggingTimer.Start();
+            this._loggingTimer?.Start();
         }
 
         private void flushBuffer(bool sync)

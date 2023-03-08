@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.ObjectModel;
+﻿using System.Collections.ObjectModel;
 
 namespace NetEti.ApplicationControl
 {
@@ -25,7 +24,9 @@ namespace NetEti.ApplicationControl
         /// <summary>Meldungen werden ohne Einschränkung durch einen möglichen User-Filter geloggt.</summary>
         NoRegex,
         /// <summary>Meldungen werden nicht geloggt.</summary>
-        Nolog
+        Nolog,
+        /// <summary>Unbekannter InfoType für syntaktische Vorbelegungen.</summary>
+        unknown
     };
 
     /// <summary>
@@ -57,6 +58,7 @@ namespace NetEti.ApplicationControl
             this._LogLevel = _LogLevel;
             this._Timestamp = _Timestamp;
             this.ThreadInfos = threadInfos;
+            this._threadInfos = threadInfos;
         }
 
         private object _MessageObject;
@@ -204,7 +206,7 @@ namespace NetEti.ApplicationControl
         public static ReadOnlyCollection<InfoType> String2InfoType(string infoPipeInfo)
         {
             System.Collections.ArrayList tmpTypes = new System.Collections.ArrayList();
-            ReadOnlyCollection<InfoType> tmpInfoType = null;
+            ReadOnlyCollection<InfoType>? tmpInfoType = null;
             InfoType[] tmpInfoTypeArray;
             string[] typeStrings = infoPipeInfo.Split('|');
             foreach (string infoString in typeStrings)
@@ -247,7 +249,12 @@ namespace NetEti.ApplicationControl
                 {
                     for (int i = 0; i < tmpTypes.Count; i++)
                     {
-                        tmpInfoTypeArray[i] = (InfoType)tmpTypes[i];
+                        tmpInfoTypeArray[i] = InfoType.unknown;
+                        object? obj = tmpTypes[i];
+                        if (obj is InfoType)
+                        {
+                            tmpInfoTypeArray[i] = (InfoType)obj;
+                        }
                     }
                 }
                 return (new ReadOnlyCollection<InfoType>(tmpInfoTypeArray));

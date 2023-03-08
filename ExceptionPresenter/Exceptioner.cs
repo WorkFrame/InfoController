@@ -1,8 +1,4 @@
-﻿using System;
-using System.Security.Permissions;
-using System.Runtime.Serialization;
-
-using System.Windows.Forms;
+﻿using System.Runtime.Serialization;
 
 namespace NetEti.ApplicationControl
 {
@@ -33,18 +29,22 @@ namespace NetEti.ApplicationControl
         /// <param name="sender">Der InfoController</param>
         /// <param name="msgArgs">Container mit Zusatzinfos</param>
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Globalization", "CA1300:SpecifyMessageBoxOptions", Justification = "only left to right reading")]
-        public void HandleInfo(object sender, InfoArgs msgArgs)
+        public void HandleInfo(object? sender, InfoArgs msgArgs)
         {
             object actMessageObject = msgArgs.MessageObject;
             if (actMessageObject is Exception)
             {
-                string msg = (actMessageObject as Exception).Message;
+                string msg = ((Exception)actMessageObject).Message;
                 if (actMessageObject is ExtendedException)
                 {
-                    actMessageObject = (msgArgs.MessageObject as ExtendedException).InnerException;
+                    object? messageObject = ((ExtendedException)actMessageObject).InnerException;
+                    if (messageObject != null)
+                    {
+                        actMessageObject = messageObject;
+                    }
                 }
                 string messageObjectType = actMessageObject.GetType().ToString();
-                Exception ex = (actMessageObject as Exception);
+                Exception ex = (Exception)actMessageObject;
                 if (ex.InnerException != null)
                 {
                     msg += Environment.NewLine + messageObjectType + " (" + ex.InnerException.Message + ")";
@@ -53,14 +53,18 @@ namespace NetEti.ApplicationControl
                 {
                     msg += Environment.NewLine + "(" + messageObjectType + ")";
                 }
-                ExtendedException ex2 = (msgArgs.MessageObject as ExtendedException);
-                if ((ex2 != null) && (ex2._suffix != null))
+                if (actMessageObject is ExtendedException)
                 {
-                    msg += Environment.NewLine + ex2._suffix;
+                    ExtendedException ex2 = (ExtendedException)actMessageObject;
+                    if ((ex2 != null) && (ex2._suffix != null))
+                    {
+                        msg += Environment.NewLine + ex2._suffix;
+                    }
                 }
                 if (msgArgs.LogLevel != InfoType.Debug)
                 {
-                    MessageBox.Show(msg, "Fehler in " + Application.ProductName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    string productName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "unknown Assembly";
+                    MessageBox.Show(msg, "Fehler in " + productName, MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
@@ -82,8 +86,8 @@ namespace NetEti.ApplicationControl
     [SerializableAttribute]
     public class ExtendedException : ApplicationException, ISerializable
     {
-        internal string _suffix;
-        private string _exStackTrace; // = null wird vom System vorbelegt
+        internal string? _suffix;
+        private string? _exStackTrace; // = null wird vom System vorbelegt
 
         /// <summary>
         /// Konstruktor: übernimmt zusätzlich zur Exception je einen
@@ -92,7 +96,7 @@ namespace NetEti.ApplicationControl
         /// <param name="prefix">Ein optionaler Text, der vor der Exception ausgegeben wird.</param>
         /// <param name="ex">Die eigentliche Exception</param>
         /// <param name="suffix">Ein optionaler Text, der nach der Exception ausgegeben wird.</param>
-        public ExtendedException(string prefix, Exception ex, string suffix)
+        public ExtendedException(string prefix, Exception ex, string? suffix)
           : base(prefix + (ex == null ? "" : ex.Message), ex)
         {
             if (ex != null)
@@ -114,19 +118,6 @@ namespace NetEti.ApplicationControl
           : this(prefix, ex, null) { }
 
         /// <summary>
-        /// Standard Konstruktor.
-        /// </summary>
-        /// <param name="msg">Die Fehlermeldung.</param>
-        public ExtendedException(string msg)
-          : this(msg, null) { }
-
-        /// <summary>
-        /// Standard Konstruktor.
-        /// </summary>
-        public ExtendedException()
-          : this("Empty ExtendedException") { }
-
-        /// <summary>
         /// De-Serialisierungs-Konstruktor;
         /// erzeugt aus dem SerialisierungsContainer die zusätzlichen Felder "Suffix" und "ExStackTrace".
         /// </summary>
@@ -145,7 +136,8 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="info">Der Serialisierungs-Container</param>
         /// <param name="context">Beschreibung des Serialisierungs-Streams</param>
-        [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        // [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
+        // SYSLIB0003 "SecurityPermissionFlag" ist veraltet: "Code Access Security is not supported or honored by the runtime."
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
@@ -159,7 +151,8 @@ namespace NetEti.ApplicationControl
         /// </summary>
         /// <param name="info">Der Serialisierungs-Container</param>
         /// <param name="context">Beschreibung des Serialisierungs-Streams</param>
-        [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        // [SecurityPermission(SecurityAction.LinkDemand, Flags = SecurityPermissionFlag.SerializationFormatter)]
+        // SYSLIB0003 "SecurityPermissionFlag" ist veraltet: "Code Access Security is not supported or honored by the runtime."
         void ISerializable.GetObjectData(SerializationInfo info, StreamingContext context)
         {
             if (info == null)
