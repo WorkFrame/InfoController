@@ -384,33 +384,33 @@ namespace NetEti.ApplicationControl
 
         private void flushBuffer(bool sync)
         {
-            if (this._worker != null)
-            {
-                if (this._worker.IsAlive)
-                {
-                    this._worker.Join();
-                }
-            }
-            this._worker = new Thread(this.flushBufferAsync);
-            this._worker.IsBackground = false; // auf jeden Fall noch beenden
-            this._overallIncrementCounter = 0;
-            if (this._loggingTimer != null)
-            {
-                this._loggingTimer.Stop();
-            }
             lock (this._lockMe)
             {
+                if (this._worker != null)
+                {
+                    if (this._worker.IsAlive)
+                    {
+                        this._worker.Join();
+                    }
+                }
+                this._worker = new Thread(this.flushBufferAsync);
+                this._worker.IsBackground = false; // auf jeden Fall noch beenden
+                this._overallIncrementCounter = 0;
+                if (this._loggingTimer != null)
+                {
+                    this._loggingTimer.Stop();
+                }
                 this.messageFlushBuffer.Clear();
                 for (int i = 0; i < this.messageBuffer.Count; i++)
                 {
                     this.messageFlushBuffer.Add(this.messageBuffer[i]);
                 }
                 this.messageBuffer.Clear();
-            }
-            this._worker.Start();
-            if (sync)
-            {
-                this._worker.Join();
+                this._worker.Start();
+                if (sync)
+                {
+                    this._worker.Join();
+                }
             }
         }
 

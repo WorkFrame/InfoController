@@ -12,8 +12,8 @@
     <Company>NetEti</Company>
     <Description>Assembly mit Routinen für asnchrones Logging</Description>
     <Copyright>Copyright © $(Authors) 2012-2023</Copyright>
-    <AssemblyVersion>7.0.1.0</AssemblyVersion>
-    <FileVersion>7.0.1.0</FileVersion>
+    <AssemblyVersion>7.0.1.1</AssemblyVersion>
+    <FileVersion>7.0.1.1</FileVersion>
     <PackageTags>NetEti Framework Logging</PackageTags>
   </PropertyGroup>
 
@@ -29,16 +29,16 @@
 		      <HintPath>$(AssemblyRoot)/NetEti.Global.dll</HintPath>
 		    </Reference>
 		  </ItemGroup>
-		  <ItemGroup>
-		    <ProjectReference Include="..\InfoController\InfoController.csproj" />
-		  </ItemGroup>
   	</When>
     <Otherwise>
 		  <ItemGroup>
 		    <PackageReference Include="NetEti.Global" Version="1.0.0" />
-		    <PackageReference Include="NetEti.InfoController" Version="1.0.0" />
 		  </ItemGroup>
     </Otherwise>
 	</Choose>
+
+	<ItemGroup>
+	  <ProjectReference Include="..\InfoController\InfoController.csproj" />
+	</ItemGroup>
 
 </Project>
