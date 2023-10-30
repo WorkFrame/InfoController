@@ -117,19 +117,25 @@ namespace NetEti.ApplicationControl
         public ExtendedException(string prefix, Exception ex)
           : this(prefix, ex, null) { }
 
+        /* Komplett auskommentiert, siehe https://github.com/dotnet/docs/issues/34893
         /// <summary>
         /// De-Serialisierungs-Konstruktor;
         /// erzeugt aus dem SerialisierungsContainer die zusätzlichen Felder "Suffix" und "ExStackTrace".
         /// </summary>
         /// <param name="info">Der Serialisierungs-Container</param>
         /// <param name="context">Beschreibung des Serialisierungs-Streams</param>
+#if NET8_0_OR_GREATER
+        [Obsolete(DiagnosticId = "SYSLIB0051")] // add this attribute to the serialization ctor
+#endif
         protected ExtendedException(SerializationInfo info, StreamingContext context)
           : base(info, context)
         {
             this._exStackTrace = info.GetString("ExStackTrace");
             this._suffix = info.GetString("Suffix");
         }
+        */
 
+        /* Komplett auskommentiert, siehe https://github.com/dotnet/docs/issues/34893
         /// <summary>
         /// Interne Erweiterung von GetOjectData der Basisklasse Exception;
         /// fügt die neuen Member "Suffix" und "ExStackTrace" hinzu.
@@ -138,13 +144,18 @@ namespace NetEti.ApplicationControl
         /// <param name="context">Beschreibung des Serialisierungs-Streams</param>
         // [SecurityPermission(SecurityAction.Demand, SerializationFormatter = true)]
         // SYSLIB0003 "SecurityPermissionFlag" ist veraltet: "Code Access Security is not supported or honored by the runtime."
+#if NET8_0_OR_GREATER
+        [Obsolete(DiagnosticId = "SYSLIB0051")] // add this attribute to GetObjectData
+#endif
         public override void GetObjectData(SerializationInfo info, StreamingContext context)
         {
             base.GetObjectData(info, context);
             info.AddValue("Suffix", _suffix);
             info.AddValue("ExStackTrace", _exStackTrace);
         }
+        */
 
+        /* Komplett auskommentiert, siehe https://github.com/dotnet/docs/issues/34893
         /// <summary>
         /// Überschriebene Schnittstellenmethode des Objekt-Serialisierers;
         /// ruft die interne Erweiterung von GetOjectData der Basisklasse Exception auf.
@@ -160,6 +171,7 @@ namespace NetEti.ApplicationControl
 
             GetObjectData(info, context);
         }
+        */
 
         /// <summary>
         /// Konvertierung der ExtendedException nach string ohne Prefix und Suffix

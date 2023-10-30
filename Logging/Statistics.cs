@@ -1,6 +1,6 @@
 ﻿using System.Text;
-using System.Timers;
 using System.Text.RegularExpressions;
+using System.Timers;
 
 namespace NetEti.ApplicationControl
 {

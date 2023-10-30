@@ -3,7 +3,7 @@
     /// <summary>
     /// Wrapperklasse um einen EventHandler; Implementiert IInfoViewer.
     /// Eine Instanz dieser Klasse kann um einen EventHandler&lt;InfoArgs&gt;
-    /// gewrapt werden und als Viewer weiterverwendet werden.
+    /// gewrappt werden und als Viewer weiterverwendet werden.
     /// </summary>
     /// <remarks>
     /// File: ViewerAsWrapper
