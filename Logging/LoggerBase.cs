@@ -80,7 +80,7 @@ namespace NetEti.ApplicationControl
         /// <summary>
         /// Sorgt dafür, dass alle anstehenden Aktionen ausgeführt
         /// werden, z.B. gefüllte Zwischentabellen (Buffer)
-        /// abgearbeitet (ge-flusht) werden.
+        /// abgearbeitet (geflusht) werden.
         /// </summary>
         public void Flush()
         {
@@ -151,7 +151,7 @@ namespace NetEti.ApplicationControl
 
         /// <summary>
         /// Maximale Anzahl Zeilen, die ein MessageBuffer aufnehmen kann,
-        /// bevor er zwangzweise geflusht wird. Diese Einstellung wirkt
+        /// bevor er zwangsweise geflusht wird. Diese Einstellung wirkt
         /// auch bei Timer-gesteuerten Logging.
         /// Default: 10000.
         /// </summary>
@@ -201,6 +201,12 @@ namespace NetEti.ApplicationControl
                 }
             }
         }
+
+        /// <summary>
+        /// Kann überschrieben werden um das Log anzuzeigen;
+        /// bei Textdateien z.B. über Ausgabe in den Standard-Editor.
+        /// </summary>
+        public virtual void Show() { }
 
         /// <summary>
         /// Konstruktor: setzt den Pfadnamen für das Logfile.

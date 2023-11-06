@@ -4,23 +4,23 @@ namespace NetEti.ApplicationControl
 {
     /// <summary>
     /// Singleton, dispatcht Meldungen unter Berücksichtigung
-    /// ihrer Schweregrade.<br></br>
+    /// ihrer Schweregrade.
     /// Verwaltet eine Delegate-Liste, in die sich Viewer eintragen
     /// können, die dann bei Eingang einer neuen Message von
     /// InfoController informiert werden.
     /// </summary>
     /// <remarks>
-    /// File: InfoController.cs<br></br>
-    /// Autor: Erik Nagel, NetEti<br></br>
-    ///<br></br>
-    /// 08.03.2012 Erik Nagel: erstellt<br></br>
-    /// 21.04.2013 Erik Nagel: Verarbeitung über Array-Kopie in informInfoReceivers.<br></br>
-    /// 02.05.2014 Erik Nagel: Say implementiert;<br></br>
+    /// Autor: Erik Nagel, NetEti
+    ///
+    /// 08.03.2012 Erik Nagel: erstellt.
+    /// 21.04.2013 Erik Nagel: Verarbeitung über Array-Kopie in informInfoReceivers.
+    /// 02.05.2014 Erik Nagel: Say implementiert;
     ///                        Aufruf von Global.DynamicIs(instance, typeof(T)) geändert in
-    ///                        typeof(T).IsAssignableFrom(instance.GetType()).<br></br>
+    ///                        typeof(T).IsAssignableFrom(instance.GetType()).
     /// 02.05.2019 Erik Nagel: IDisposable implementiert.
+    /// 06.11.2023 Erik Nagel: IShowable implementiert.
     /// </remarks>
-    public class InfoController : IInfoController, IDisposable, IFlushable
+    public class InfoController : IInfoController, IDisposable, IFlushable, IShowable
     {
         #region public members
 
@@ -48,7 +48,7 @@ namespace NetEti.ApplicationControl
                 // eventuelle unmanaged resources hier freigeben
                 if (disposing)
                 {
-                    // hier werden managed ressources freigegeben
+                    // hier werden managed resources freigegeben
                     this.DisposeAll();
                 }
                 this._disposed = true;
@@ -156,6 +156,34 @@ namespace NetEti.ApplicationControl
         public void Publish(object msg)
         {
             this.Publish(null, msg, InfoType.Info);
+        }
+
+        /// <summary>
+        /// Hierüber werden alle Logs ausgegeben.
+        /// </summary>
+        public void Show()
+        {
+            IInfoViewer[] viewers;
+            lock (InfoController._lockMe)
+            {
+                // zur weiteren Verarbeitung threadsafe in ein entkoppeltes Array kopieren.
+                // In einer Multithreading-Umgebung können den _infoMessageReceivers Viewer hinzugefügt
+                // werden, während diese Routine gerade läuft, was bei der direkten Verwendung von
+                // this._infoMessageReceivers zu der Exception führen würde, dass die Auflistung
+                // während der Verarbeitung geändert wurde.
+                // Alternative wäre, die gesamte Routine zu sperren. Das würde aber möglicherweise die
+                // gesamte Verarbeitung ausbremsen, weshalb ich hier lieber eine im Extremfall verloren
+                // gegangene Message in Kauf nehme.
+                viewers = new IInfoViewer[this._infoMessageReceivers.Count];
+                this._infoMessageReceivers.Keys.CopyTo(viewers, 0);
+            }
+            foreach (IInfoViewer viewer in viewers)
+            {
+                if (viewer is IShowable)
+                {
+                    (viewer as IShowable)?.Show();
+                }
+            }
         }
 
         /// <summary>

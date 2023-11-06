@@ -10,7 +10,7 @@
     ///<br></br>
     /// 08.03.2012 Erik Nagel: erstellt<br></br>
     /// </remarks>
-    public interface IInfoPublisher: IFlushable
+    public interface IInfoPublisher: IFlushable, IShowable
     {
         /// <summary>
         /// Hierüber wird einen neue Message verbreitet.

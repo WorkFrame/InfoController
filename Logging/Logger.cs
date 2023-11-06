@@ -1,4 +1,5 @@
-﻿using System.Text;
+﻿using System.Diagnostics;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace NetEti.ApplicationControl
@@ -8,16 +9,16 @@ namespace NetEti.ApplicationControl
     /// implementiert IInfoViewer.
     /// </summary>
     /// <remarks>
-    /// File: Logger.cs<br></br>
-    /// Autor: Erik Nagel, NetEti<br></br>
-    ///<br></br>
-    /// 08.03.2012 Erik Nagel: erstellt<br></br>
-    /// 15.03.2014 Erik Nagel: Statistics eingebaut; Regex-Filter implementiert.<br></br>
-    /// 14.07.2016 Erik Nagel: Exceptions werden jetzt auf jeden Fall geloggt.<br></br>
-    /// 14.01.2018 Erik Nagel: Wegen Memory-Leaks überarbeitet (StringBuilder); Ausgabeformat optimiert.<br></br>
-    /// 21.01.2022 Erik Nagel: _replaceRegex implementiert.<br></br>
+    /// Autor: Erik Nagel, NetEti
+    ///
+    /// 08.03.2012 Erik Nagel: erstellt
+    /// 15.03.2014 Erik Nagel: Statistics eingebaut; Regex-Filter implementiert.
+    /// 14.07.2016 Erik Nagel: Exceptions werden jetzt auf jeden Fall geloggt.
+    /// 14.01.2018 Erik Nagel: Wegen Memory-Leaks überarbeitet (StringBuilder); Ausgabeformat optimiert.
+    /// 21.01.2022 Erik Nagel: _replaceRegex implementiert.
+    /// 06.11.2023 Erik Nagel: IShowable implementiert.
     /// </remarks>
-    public class Logger : LoggerBase
+    public class Logger : LoggerBase, IShowable
     {
 
         #region LoggerBase Members
@@ -238,7 +239,25 @@ namespace NetEti.ApplicationControl
         }
 
         /// <summary>
-        /// Einrückung der Folgezeilen bei mehrzeilingen Messages.
+        /// Kann überschrieben werden um das Log anzuzeigen;
+        /// bei Textdateien z.B. über Ausgabe in den Standard-Editor.
+        /// </summary>
+        public override void Show()
+        {
+            this.Flush();
+            Thread.Sleep(100);
+            if (File.Exists(this.LogTargetInfo))
+            {
+                try { Process.Start("notepad.exe", this.LogTargetInfo); }
+                catch (Exception /* ex */)
+                {
+                    // MessageBox.Show(ex.Message, "Kann das Logfile nicht anzeigen.", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Einrückung der Folgezeilen bei mehrzeiligen Messages.
         /// Default: 4.
         /// </summary>
         public int StandardIndent { get; set; }
