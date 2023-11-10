@@ -14,7 +14,7 @@ namespace NetEti.ApplicationControl
     /// 08.03.2012 Erik Nagel: erstellt<br></br>
     /// 08.03.2012 Erik Nagel: CutLog(...) eingebaut.<br></br>
     /// 10.05.2013 Erik Nagel: CutLog(string logPath, long countItemsFromStart, long countItemsToEnd, bool countLines) neu;
-    ///                        beim Wegschreiben des gekürzten Logs System.Text.Encoding.Default eingefügt.<br></br>
+    ///                        beim Schreiben des gekürzten Logs System.Text.Encoding.Default eingefügt.<br></br>
     /// 27.08.2015 Erik Nagel: Asynchrones Logging implementiert.
     /// 11.08.2018 Erik Nagel: Sortieren nach Timestamp bei PlainMessage==False implementiert.
     /// </remarks>
@@ -46,7 +46,7 @@ namespace NetEti.ApplicationControl
                 // eventuelle unmanaged resources hier freigeben
                 if (disposing)
                 {
-                    // hier werden managed ressources freigegeben
+                    // hier werden managed resources freigegeben
                     this.flushBuffer(true);
                 }
                 this._disposed = true;

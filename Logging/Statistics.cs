@@ -120,7 +120,7 @@ namespace NetEti.ApplicationControl
         /// Setzt den Zähler mit dem übergebenen Namen auf 0.
         /// Der Zähler wird bei der ersten Referenzierung neu erzeugt.
         /// Wird als Zähler-Name null übergeben, werden alle Zähler
-        /// auf 0 gesetzt und der interne Trigger zurückgesezt.
+        /// auf 0 gesetzt und der interne Trigger zurückgesetzt.
         /// </summary>
         /// <param name="name">Name des Zählers oder null.</param>
         public static void Reset(string name)
