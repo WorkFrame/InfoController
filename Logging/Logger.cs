@@ -283,7 +283,7 @@ namespace NetEti.ApplicationControl
             if (assembly != null)
             {
                 // rtn = System.Windows.Forms.Application.ProductName; break;
-                productName = assembly.GetName().Name ?? "unbekannte Assembly";
+                productName = assembly.GetName().Name ?? "unknown";
             }
             return Path.Combine(logFilePathName, productName + @".log");
         }
