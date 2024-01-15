@@ -3,13 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.4.33213.308
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoController", "InfoController\InfoController.csproj", "{811E3F19-336D-411B-AC01-C5F22E68346F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoController", "InfoController\InfoController.csproj", "{811E3F19-336D-411B-AC01-C5F22E68346F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "InfoControllerDemo", "InfoControllerDemo\InfoControllerDemo.csproj", "{8AC0B323-63A6-4253-BBF7-BB1BE7B9C6C1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "InfoControllerDemo", "InfoControllerDemo\InfoControllerDemo.csproj", "{8AC0B323-63A6-4253-BBF7-BB1BE7B9C6C1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Logging", "Logging\Logging.csproj", "{36C11F62-EFC6-4F4D-9038-B2E90800754F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.csproj", "{36C11F62-EFC6-4F4D-9038-B2E90800754F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExceptionPresenter", "ExceptionPresenter\ExceptionPresenter.csproj", "{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExceptionPresenter", "ExceptionPresenter\ExceptionPresenter.csproj", "{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerStressTest", "LoggerStressTest\LoggerStressTest.csproj", "{04BDF843-1C40-4979-BD59-B44F7966F441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04BDF843-1C40-4979-BD59-B44F7966F441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04BDF843-1C40-4979-BD59-B44F7966F441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04BDF843-1C40-4979-BD59-B44F7966F441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04BDF843-1C40-4979-BD59-B44F7966F441}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

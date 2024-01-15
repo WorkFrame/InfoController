@@ -5,17 +5,14 @@ using System.Timers;
 namespace NetEti.ApplicationControl
 {
     /// <summary>
-    /// Ermöglicht Statistische Auswertungen ohne das System
+    /// Ermöglicht statistische Auswertungen ohne das System
     /// bei häufig durchlaufenen Zählstellen mit zu vielen
     /// Log-Aufrufen zu belasten.
     /// Kann über Timer oder Anzahl Zählvorgänge getriggert werden.
     /// </summary>
     /// <remarks>
-    /// File: Statistics.cs
-    /// Autor: Erik Nagel
-    ///
     /// 28.09.2013 Erik Nagel: erstellt
-    /// 14.01.2018 Erik Nagel: Wegen Memory-Leaks und Zombie-Tasks überarbeitet; Ausgabeformat optimiert.<br></br>
+    /// 14.01.2018 Erik Nagel: Wegen Memory-Leaks und Zombie-Tasks überarbeitet; Ausgabeformat optimiert.
     /// </remarks>
     public static class Statistics
     {

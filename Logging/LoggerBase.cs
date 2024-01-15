@@ -406,12 +406,20 @@ namespace NetEti.ApplicationControl
                 {
                     this._loggingTimer.Stop();
                 }
+                //string timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture,
+                //    "{0:yyyy.MM.dd HH:mm:ss,ffffff}", new object[] { System.DateTime.Now });
+                //this.WriteLog(timestamp + " Debug     Emptying messageFlushBuffer and filling");
                 this.messageFlushBuffer.Clear();
+                this.messageFlushBuffer = new List<string>(); // 24.11.2023 Erik Nagel+-
                 for (int i = 0; i < this.messageBuffer.Count; i++)
                 {
                     this.messageFlushBuffer.Add(this.messageBuffer[i]);
                 }
+                //timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture,
+                //    "{0:yyyy.MM.dd HH:mm:ss,ffffff}", new object[] { System.DateTime.Now });
+                //this.WriteLog(timestamp + " Debug     Emptying messageBuffer");
                 this.messageBuffer.Clear();
+                this.messageBuffer = new List<string>(); // 24.11.2023 Erik Nagel+-
                 this._worker.Start();
                 if (sync)
                 {
@@ -429,10 +437,16 @@ namespace NetEti.ApplicationControl
                     this.messageFlushBuffer.Sort();
                     //this.WriteLog(String.Format($"--- MaxBufferLineCount: {MaxBufferLineCount}, IsTimerTriggered: {IsTimerTriggered}, LoggingTriggerCounter: {LoggingTriggerCounter} ---"));
                 }
+                //string timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture,
+                //    "{0:yyyy.MM.dd HH:mm:ss,ffffff}", new object[] { System.DateTime.Now });
+                //this.WriteLog(timestamp + " Debug     Writing messageFlushBuffer Start (" + this.messageFlushBuffer.Count + ")");
                 for (int i = 0; i < this.messageFlushBuffer.Count; i++)
                 {
                     this.WriteLog(this.messageFlushBuffer[i]);
                 }
+                //timestamp = System.String.Format(System.Globalization.CultureInfo.CurrentCulture,
+                //    "{0:yyyy.MM.dd HH:mm:ss,ffffff}", new object[] { System.DateTime.Now });
+                //this.WriteLog(timestamp + " Debug     Writing messageFlushBuffer Finish");
                 if (this.DebugArchivingInterval > TimeSpan.Zero)
                 {
                     this.OrganizeLoggings(this.DebugArchivingInterval, this.DebugArchiveMaxCount);
