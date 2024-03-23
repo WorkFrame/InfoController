@@ -47,6 +47,7 @@ namespace NetEti.ApplicationControl
                 if (disposing)
                 {
                     // hier werden managed resources freigegeben
+                    this.Stop();
                     this.flushBuffer(true);
                 }
                 this._disposed = true;
@@ -181,7 +182,7 @@ namespace NetEti.ApplicationControl
         /// <param name="message">Der Message-Text</param>
         public void Log(string message)
         {
-            lock (this._lockMe)
+            lock (this._lockMe3)
             {
                 this.messageBuffer.Add(message);
             }
@@ -209,6 +210,16 @@ namespace NetEti.ApplicationControl
         public virtual void Show() { }
 
         /// <summary>
+        /// Muss am Schluss der Verarbeitung aufgerufen werden, um den Timer zu stoppen.
+        /// </summary>
+        public void Stop()
+        {
+            this._isStopped = true;
+            IsTimerTriggered = false;
+            resetStartTimer();
+        }
+
+        /// <summary>
         /// Konstruktor: setzt den Pfadnamen für das Logfile.
         /// </summary>
         /// <param name="logTargetInfo">Pfad- und Name des Logfiles, Tabellenname, etc.</param>
@@ -221,6 +232,7 @@ namespace NetEti.ApplicationControl
             this.IsTimerTriggered = true;
             this._lockMe = new object();
             this._lockMe2 = new object();
+            this._lockMe3 = new object();
             this.messageBuffer = new List<string>();
             this.messageFlushBuffer = new List<string>();
             this.DebugArchivingInterval = TimeSpan.Zero;
@@ -360,11 +372,13 @@ namespace NetEti.ApplicationControl
         private bool _isTimerTriggered;
         private object _lockMe;
         private object _lockMe2;
+        private object _lockMe3;
         private Thread? _worker;
         private List<String> messageBuffer;
         private List<String> messageFlushBuffer;
         private long _overallIncrementCounter;
         private long _loggingTriggerCounter;
+        private volatile bool _isStopped = false;
 
         private void resetStartTimer()
         {
@@ -373,7 +387,7 @@ namespace NetEti.ApplicationControl
                 this._loggingTimer.Stop();
                 this._loggingTimer.Dispose();
             }
-            if (IsTimerTriggered)
+            if (IsTimerTriggered & !this._isStopped)
             {
                 this._loggingTimer = new System.Timers.Timer(LoggingTriggerCounter);
                 this._loggingTimer.Elapsed += new ElapsedEventHandler(loggingTimer_Elapsed);
@@ -385,7 +399,10 @@ namespace NetEti.ApplicationControl
         {
             this._loggingTimer?.Stop();
             this.flushBuffer(false);
-            this._loggingTimer?.Start();
+            if (!this._isStopped)
+            {
+                this._loggingTimer?.Start();
+            }
         }
 
         private void flushBuffer(bool sync)
@@ -396,7 +413,7 @@ namespace NetEti.ApplicationControl
                 {
                     if (this._worker.IsAlive)
                     {
-                        this._worker.Join();
+                        this._worker.Join(600);
                     }
                 }
                 this._worker = new Thread(this.flushBufferAsync);
@@ -423,7 +440,7 @@ namespace NetEti.ApplicationControl
                 this._worker.Start();
                 if (sync)
                 {
-                    this._worker.Join();
+                    this._worker.Join(600);
                 }
             }
         }

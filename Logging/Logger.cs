@@ -150,20 +150,24 @@ namespace NetEti.ApplicationControl
             catch { }
             if (debugArchiveMaxCount > 0)
             {
-                List<FileInfo> archiveFiles =
-                    new DirectoryInfo(Path.GetDirectoryName(this.LogTargetInfo) ?? "")
-                        .GetFiles(Path.GetFileName(this.LogTargetInfo) + ".*").ToList();
-                if (archiveFiles.Count > debugArchiveMaxCount)
+                string? logDir = Path.GetDirectoryName(this.LogTargetInfo);
+                if (Directory.Exists(logDir))
                 {
-                    foreach (FileInfo fileInfo in archiveFiles
-                        .OrderBy(f => f.CreationTimeUtc)
-                        .Take(archiveFiles.Count - debugArchiveMaxCount))
+                    List<FileInfo> archiveFiles =
+                        new DirectoryInfo(logDir)
+                            .GetFiles(Path.GetFileName(this.LogTargetInfo) + ".*").ToList();
+                    if (archiveFiles?.Count > debugArchiveMaxCount)
                     {
-                        try
+                        foreach (FileInfo fileInfo in archiveFiles
+                            .OrderBy(f => f.CreationTimeUtc)
+                            .Take(archiveFiles.Count - debugArchiveMaxCount))
                         {
-                            File.Delete(fileInfo.FullName);
+                            try
+                            {
+                                File.Delete(fileInfo.FullName);
+                            }
+                            catch { }
                         }
-                        catch { }
                     }
                 }
             }
