@@ -1,6 +1,6 @@
 ﻿using NetEti.ApplicationControl;
 
-namespace LoggerStressTest
+namespace LoggerStressTestDemo
 {
     internal class Program
     {

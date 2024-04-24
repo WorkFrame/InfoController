@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Logging", "Logging\Logging.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ExceptionPresenter", "ExceptionPresenter\ExceptionPresenter.csproj", "{DB2DEC5F-8E5C-4D6F-90E5-CCCA452F2AE3}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerStressTest", "LoggerStressTest\LoggerStressTest.csproj", "{04BDF843-1C40-4979-BD59-B44F7966F441}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LoggerStressTestDemo", "LoggerStressTestDemo\LoggerStressTestDemo.csproj", "{04BDF843-1C40-4979-BD59-B44F7966F441}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
