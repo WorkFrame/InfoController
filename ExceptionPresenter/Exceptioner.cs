@@ -1,4 +1,5 @@
 ﻿using System.Runtime.Serialization;
+using System.Windows;
 
 namespace NetEti.ApplicationControl
 {
@@ -64,7 +65,7 @@ namespace NetEti.ApplicationControl
                 if (msgArgs.LogLevel != InfoType.Debug)
                 {
                     string productName = System.Reflection.Assembly.GetEntryAssembly()?.GetName().Name ?? "unknown Assembly";
-                    MessageBox.Show(msg, "Fehler in " + productName, MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(msg, "Fehler in " + productName, MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
